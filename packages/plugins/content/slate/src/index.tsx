@@ -27,7 +27,6 @@ import * as React from 'react';
 import Component from './Component';
 import Plugin from './plugins/Plugin';
 import * as hooks from './hooks';
-import parse5 from 'parse5';
 import v002 from './migrations/v002';
 import { Value } from 'slate';
 import { PluginButtonProps } from './plugins/Plugin';
@@ -48,7 +47,6 @@ export const createInitialState = hooks.createInitialState;
 
 export const html = new Html({
   rules: [...hooks.defaultPlugins, hooks.lineBreakSerializer],
-  parseHtml: parse5.parseFragment,
 });
 
 export const defaultPlugins = hooks.defaultPlugins;
@@ -59,21 +57,14 @@ export default (
   let settings: SlateSettings = {};
   settings.plugins = (plugins ? plugins : []).concat(createPlugins(plugins));
 
-  const HoverButtons = ({
-    editorState,
-    editor,
-  }: PluginButtonProps) => (
+  const HoverButtons = ({ editorState, editor }: PluginButtonProps) => (
     <div>
       {plugins &&
         plugins.map(
           (plugin: Plugin, i: number) =>
             plugin.hoverButtons &&
             plugin.hoverButtons.map((Button, j: number) => (
-              <Button
-                key={`${i}-${j}`}
-                editorState={editorState}
-                editor={editor}
-              />
+              <Button key={`${i}-${j}`} editorState={editorState} editor={editor} />
             ))
         )}
     </div>
@@ -81,21 +72,14 @@ export default (
 
   settings.HoverButtons = HoverButtons;
 
-  const ToolbarButtons = ({
-    editorState,
-    editor,
-  }: PluginButtonProps) => (
+  const ToolbarButtons = ({ editorState, editor }: PluginButtonProps) => (
     <div>
       {plugins &&
         plugins.map(
           (plugin: Plugin, i: number) =>
             plugin.toolbarButtons &&
             plugin.toolbarButtons.map((Button, j: number) => (
-              <Button
-                key={`${i}-${j}`}
-                editorState={editorState}
-                editor={editor}
-              />
+              <Button key={`${i}-${j}`} editorState={editorState} editor={editor} />
             ))
         )}
     </div>
@@ -104,9 +88,7 @@ export default (
   const Slate: React.SFC<SlateProps> = cellProps => (
     <Component {...cellProps} {...settings} />
   );
-  const StaticComponent = ({
-    state: { editorState = {} as Value } = {},
-  }: SlateProps) => (
+  const StaticComponent = ({ state: { editorState = {} as Value } = {} }: SlateProps) => (
     <div
       className="ory-plugins-content-slate-container"
       dangerouslySetInnerHTML={{ __html: html.serialize(editorState) }}
@@ -148,8 +130,7 @@ export default (
     // tslint:disable-next-line:no-any
     reducer: (state: any, action: AnyAction) => {
       if (
-        (action.type === ActionTypes.UNDO ||
-          action.type === ActionTypes.REDO) &&
+        (action.type === ActionTypes.UNDO || action.type === ActionTypes.REDO) &&
         pathOr(false, ['content', 'state', 'editorState'], state)
       ) {
         return {

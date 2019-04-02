@@ -35,7 +35,6 @@ import HeadingsPlugin from './plugins/headings';
 import LinkPlugin from './plugins/link/index';
 import ListsPlugin from './plugins/lists';
 import ParagraphPlugin, { P } from './plugins/paragraph/index';
-import parse5 from 'parse5';
 import Plugin from './plugins/Plugin';
 
 // FIXME #126
@@ -90,7 +89,6 @@ export const lineBreakSerializer = {
 
 export const html = new Html({
   rules: [...defaultPlugins, lineBreakSerializer],
-  parseHtml: parse5.parseFragment,
 });
 
 export const createInitialState = () => ({
@@ -135,9 +133,7 @@ SlateState): SlateState => {
 };
 
 // tslint:disable-next-line:no-any
-export const serialize = ({
-  editorState,
-}: SlateState): { serialized: ValueJSON } => ({
+export const serialize = ({ editorState }: SlateState): { serialized: ValueJSON } => ({
   // tslint:disable-next-line:no-any
   serialized: (editorState.toJSON as any)(editorState),
 });
@@ -240,9 +236,7 @@ export const handleFocusPreviousHotKey = (
       // } else
       if (
         editorState.selection.isCollapsed &&
-        editorState.selection.anchor.isAtStartOfNode(
-          editorState.document.nodes.first()
-        )
+        editorState.selection.anchor.isAtStartOfNode(editorState.document.nodes.first())
       ) {
         return resolve();
       }
@@ -272,9 +266,7 @@ export const handleFocusNextHotKey = (
       // } else
       if (
         editorState.selection.isCollapsed &&
-        editorState.selection.anchor.isAtEndOfNode(
-          editorState.document.nodes.last()
-        )
+        editorState.selection.anchor.isAtEndOfNode(editorState.document.nodes.last())
       ) {
         return resolve();
       }
