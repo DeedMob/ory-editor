@@ -67,7 +67,7 @@ class LinkButton extends React.Component<PluginButtonProps, LinkButtonState> {
     if (e) {
       e.focus();
     }
-  }
+  };
 
   onClick = e => {
     const { editorState, editor } = this.props;
@@ -96,12 +96,12 @@ class LinkButton extends React.Component<PluginButtonProps, LinkButtonState> {
         hadLinks: hasLinks,
       });
     }
-  }
+  };
 
   handleClose = () => {
     this.setState({ open: false });
     this.props.editor.focus();
-  }
+  };
 
   handleSubmit = () => {
     this.setState({ open: false });
@@ -136,15 +136,15 @@ class LinkButton extends React.Component<PluginButtonProps, LinkButtonState> {
       })
       .moveToEnd()
       .focus();
-  }
+  };
 
   onHrefChange = e => {
     this.setState({ href: e.target.value });
-  }
+  };
 
   onTitleChange = e => {
     this.setState({ title: e.target.value });
-  }
+  };
 
   render() {
     const actions = (
@@ -175,8 +175,7 @@ class LinkButton extends React.Component<PluginButtonProps, LinkButtonState> {
               className="ory-prevent-blur"
               title="Create a link"
               // modal={false}
-              open={this.state.open}
-            >
+              open={this.state.open}>
               <DialogTitle id="confirmation-dialog-title">
                 Create a link
               </DialogTitle>
@@ -235,7 +234,7 @@ export default class LinkPlugin extends Plugin {
       default:
         return;
     }
-  }
+  };
 
   serialize = (
     // tslint:disable-next-line:no-any
@@ -248,11 +247,18 @@ export default class LinkPlugin extends Plugin {
     }
     switch (object.type) {
       case A:
-        return <a href={object.data.get('href')}>{children}</a>;
+        const href = object.data.get('href');
+        return (
+          <a
+            href={href}
+            rel={`noopener noreferrer${href[0] === '/' ? '' : ' nofollow'}`}>
+            {children}
+          </a>
+        );
       default:
         return;
     }
-  }
+  };
 
   renderNode = (props: RenderNodeProps, editor: Editor, next: NextType) => {
     switch (props.node.type) {
@@ -262,5 +268,5 @@ export default class LinkPlugin extends Plugin {
       default:
         return next();
     }
-  }
+  };
 }

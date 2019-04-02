@@ -2,6 +2,5 @@
   "editor.formatOnSave": true,
   "singleQuote": true,
   "trailingComma": "es5",
-  "jsxBracketSameLine": true,
-  "printWidth": 90
+  "jsxBracketSameLine": true
 }
